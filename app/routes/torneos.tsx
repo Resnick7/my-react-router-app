@@ -1,5 +1,6 @@
-import React from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import React from 'react';
+import { useFetcher, useLoaderData } from 'react-router';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 
 // Datos de ejemplo de eventos
 const eventsData = [
@@ -12,51 +13,7 @@ const eventsData = [
     description: "Conferencia a cargo del Dr. Alan Turing sobre los avances en inteligencia artificial y su impacto en la sociedad.",
     formUrl: "https://forms.gle/ejemplo1"
   },
-  {
-    id: 2,
-    title: "Taller de Programación Web",
-    date: "2023-08-20",
-    time: "14:00 - 16:00",
-    location: "Laboratorio de Informática",
-    description: "Taller práctico sobre las últimas tecnologías de desarrollo web, incluyendo React, Node.js y bases de datos.",
-    formUrl: "https://forms.gle/ejemplo2"
-  },
-  {
-    id: 3,
-    title: "Seminario de Sostenibilidad Ambiental",
-    date: "2023-08-25",
-    time: "09:00 - 11:00",
-    location: "Sala de Conferencias B",
-    description: "Seminario sobre prácticas sostenibles y su importancia en el contexto actual de cambio climático.",
-    formUrl: "https://forms.gle/ejemplo3"
-  },
-  {
-    id: 4,
-    title: "Exposición de Arte Estudiantil",
-    date: "2023-09-05",
-    time: "16:00 - 19:00",
-    location: "Galería de Arte",
-    description: "Exposición de obras creadas por los estudiantes de la carrera de Artes Visuales.",
-    formUrl: "https://forms.gle/ejemplo4"
-  },
-  {
-    id: 5,
-    title: "Foro de Emprendimiento",
-    date: "2023-09-10",
-    time: "10:00 - 13:00",
-    location: "Centro de Convenciones",
-    description: "Encuentro con emprendedores exitosos que compartirán sus experiencias y consejos para iniciar un negocio.",
-    formUrl: "https://forms.gle/ejemplo5"
-  },
-  {
-    id: 6,
-    title: "Torneo Deportivo Interuniversitario",
-    date: "2025-11-4",
-    time: "08:00 - 18:00",
-    location: "Complejo Deportivo",
-    description: "Torneo que reúne a estudiantes de diferentes universidades para competir en diversas disciplinas deportivas.",
-    formUrl: "https://forms.gle/ejemplo6"
-  }
+  // ... resto de los datos
 ];
 
 // Función para formatear la fecha
@@ -74,7 +31,22 @@ const isUpcoming = (dateString: string) => {
   return diffDays >= 0 && diffDays <= 30;
 };
 
+// Loader para cargar los datos de eventos
+export async function loader() {
+  // Aquí iría la lógica para cargar datos desde una API
+  return { eventsData };
+}
+
+// Action para manejar las acciones del componente
+export async function action({ request }: { request: Request }) {
+  // Aquí iría la lógica para manejar las acciones
+  return {};
+}
+
 const Torneos: React.FC = () => {
+  // const { eventsData } = useLoaderData() as { eventsData: typeof eventsData };
+  const fetcher = useFetcher();
+  
   // Filtrar solo los eventos próximos
   const upcomingEvents = eventsData.filter(event => isUpcoming(event.date));
 
@@ -90,7 +62,7 @@ const Torneos: React.FC = () => {
         </CardHeader>
         <CardContent>
           <p className="text-gray-700">
-            Mantente al tanto de las actividades académicas, culturales y deportivas que se realizarán en las próximas semanas.
+            Mantente al tanto de las actividades deportivas que se realizarán en las próximas semanas.
             Inscribete en los eventos de tu interés para participar.
           </p>
         </CardContent>
@@ -119,17 +91,19 @@ const Torneos: React.FC = () => {
               <CardContent>
                 <p className="text-gray-600 mb-4">{event.description}</p>
                 <div className="flex justify-end">
-                  <a 
-                    href={event.formUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors flex items-center"
-                  >
-                    Inscribirse
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </a>
+                  <fetcher.Form method="post">
+                    <input type="hidden" name="intent" value="register" />
+                    <input type="hidden" name="eventId" value={event.id} />
+                    <button 
+                      type="submit"
+                      className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors flex items-center"
+                    >
+                      Inscribirse
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </button>
+                  </fetcher.Form>
                 </div>
               </CardContent>
             </Card>
@@ -219,14 +193,16 @@ const Torneos: React.FC = () => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         {diffDays >= 0 ? (
-                          <a 
-                            href={event.formUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="text-teal-600 hover:text-teal-900"
-                          >
-                            Inscribirse
-                          </a>
+                          <fetcher.Form method="post">
+                            <input type="hidden" name="intent" value="register" />
+                            <input type="hidden" name="eventId" value={event.id} />
+                            <button 
+                              type="submit"
+                              className="text-teal-600 hover:text-teal-900"
+                            >
+                              Inscribirse
+                            </button>
+                          </fetcher.Form>
                         ) : (
                           <span className="text-gray-400">No disponible</span>
                         )}
@@ -243,4 +219,4 @@ const Torneos: React.FC = () => {
   );
 };
 
-export default Torneos
+export default Torneos;

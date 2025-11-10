@@ -16,13 +16,10 @@ interface ScheduleTableProps {
   schedule: ScheduleItem[];
 }
 
-const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 const timeSlots = [
-  '08:00 - 09:30',
-  '09:45 - 11:15',
-  '11:30 - 13:00',
-  '14:30 - 16:00',
-  '16:15 - 17:45'
+  '10:00 - 12:00',
+  '16:00 - 18:00'
 ];
 
 const TablaHorarios: React.FC<ScheduleTableProps> = ({ schedule }) => {
