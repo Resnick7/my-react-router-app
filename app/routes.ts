@@ -5,6 +5,7 @@ export default [
   index('./routes/about.tsx'),
   route('/horarios', './routes/horarios.tsx'),
   route('/noticias', './routes/noticias.tsx'),
+  route('/noticias/:id', './routes/noticias.$id.tsx'),
   route('/torneos', './routes/torneos.tsx'),
   route('/resultados', './routes/resultados.tsx'),
 ] satisfies RouteConfig
