@@ -119,9 +119,6 @@ const ResultCard: React.FC<{ result: TournamentResult }> = ({ result }) => {
             <p className="text-sm text-gray-500">
               {formatFileSize(result.fileSize)} • Subido el {formatDate(result.publishedAt)}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
-              📥 {result.downloads} descargas
-            </p>
           </div>
         </div>
 
@@ -193,8 +190,6 @@ const Resultados: React.FC = () => {
   }
 
   const results: TournamentResult[] = data?.tournamentResults || [];
-
-  console.log(results)
   
   // Filtrar resultados por tipo si está seleccionado
   const filteredResults = selectedType 
@@ -221,42 +216,6 @@ const Resultados: React.FC = () => {
           </p>
         </CardContent>
       </Card>
-
-      {/* Filtros */}
-      {resultTypes.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Filtrar por tipo</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedType(null)}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  selectedType === null 
-                    ? 'bg-purple-600 text-white' 
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                }`}
-              >
-                Todos
-              </button>
-              {resultTypes.map(type => (
-                <button 
-                  key={type}
-                  onClick={() => setSelectedType(type)}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
-                    selectedType === type 
-                      ? 'bg-purple-600 text-white' 
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Lista de resultados */}
       <div className="space-y-4">
