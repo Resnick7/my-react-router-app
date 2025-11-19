@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { GET_TOURNAMENT_RESULTS, INCREMENT_RESULT_DOWNLOADS } from '../lib/graphql/queries';
+import { GET_TOURNAMENT_RESULTS } from '../lib/graphql/queries';
 
 interface TournamentResult {
   id: string;
@@ -46,7 +46,6 @@ const ResultCard: React.FC<{ result: TournamentResult }> = ({ result }) => {
 
   const handleDownload = async () => {
     try {
-      // 2️⃣ Descargar el archivo de forma correcta
       const response = await fetch(`http://localhost:4000/download-pdf/${result.pdfFileName}`);
 
       if (!response.ok) {
@@ -54,18 +53,15 @@ const ResultCard: React.FC<{ result: TournamentResult }> = ({ result }) => {
         return;
       }
 
-      // 3️⃣ Convertir a blob
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
 
-      // 4️⃣ Crear un link invisible y activarlo
       const a = document.createElement('a');
       a.href = url;
       a.download = result.pdfFileName;
       document.body.appendChild(a);
       a.click();
 
-      // 5️⃣ Limpieza
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
@@ -150,7 +146,7 @@ const ResultCard: React.FC<{ result: TournamentResult }> = ({ result }) => {
 };
 
 const Resultados: React.FC = () => {
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>();
   
   const { loading, error, data } = useQuery(GET_TOURNAMENT_RESULTS, {
     variables: { 
@@ -195,9 +191,6 @@ const Resultados: React.FC = () => {
   const filteredResults = selectedType 
     ? results.filter(r => r.resultType === selectedType)
     : results;
-
-  // Obtener tipos únicos de resultados
-  const resultTypes = [...new Set(results.map(r => r.resultType))];
 
   return (
     <div className="space-y-6">

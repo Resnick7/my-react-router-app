@@ -8,4 +8,5 @@ export default [
   route('/noticias/:id', './routes/noticias.$id.tsx'),
   route('/torneos', './routes/torneos.tsx'),
   route('/resultados', './routes/resultados.tsx'),
+  route('/contacto', './routes/contacto.tsx'),
 ] satisfies RouteConfig

@@ -36,6 +36,7 @@ export default function Root() {
     if (location.pathname.startsWith('/noticias')) return 'noticias';
     if (location.pathname.startsWith('/torneos')) return 'torneos';
     if (location.pathname.startsWith('/resultados')) return 'resultados';
+    if (location.pathname.startsWith('/contacto')) return 'contacto';
     return 'quienes-somos';
   };
 
@@ -62,7 +63,7 @@ export default function Root() {
               </div>
             ) : (
               <Tabs value={getActiveTab()} className="w-full">
-                <TabsList className="grid w-full grid-cols-5 mb-6">
+                <TabsList className="grid w-full grid-cols-6 mb-6">
                   <TabsTrigger value="quienes-somos" asChild>
                     <Link to="/" className="w-full text-center">Quienes somos</Link>
                   </TabsTrigger>
@@ -77,6 +78,9 @@ export default function Root() {
                   </TabsTrigger>
                   <TabsTrigger value="resultados" asChild>
                     <Link to="/resultados" className="w-full text-center">Resultados</Link>
+                  </TabsTrigger>
+                  <TabsTrigger value="contacto" asChild>
+                    <Link to="/contacto" className="w-full text-center">Contacto</Link>
                   </TabsTrigger>
                 </TabsList>
 
@@ -97,6 +101,10 @@ export default function Root() {
                 </TabsContent>
 
                 <TabsContent value="resultados" className="space-y-4">
+                  <Outlet />
+                </TabsContent>
+
+                <TabsContent value="contacto" className="space-y-4">
                   <Outlet />
                 </TabsContent>
               </Tabs>

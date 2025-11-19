@@ -97,7 +97,7 @@ const WhoWeAre: React.FC = () => {
                     name: teacher.fullName,
                     specialty: teacher.specialties.join(', '),
                     description: teacher.bio || `Profesor con ${teacher.experience || 0} años de experiencia`,
-                    imageUrl: teacher.photoUrl || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'
+                    imageUrl: teacher.photoUrl
                   }} 
                 />
               ))
